@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{FC00AC88-11D9-482E-B694-6B8A5D5F4175}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.Core", "DatingApp.Core\DatingApp.Core.csproj", "{B9C557E4-0A11-4330-A930-BFD3B3C8146A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.Infrastructure", "DatingApp.Infrastructure\DatingApp.Infrastructure.csproj", "{88282CCA-ECB4-47C3-AC9E-C3E74BB2AD00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC00AC88-11D9-482E-B694-6B8A5D5F4175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC00AC88-11D9-482E-B694-6B8A5D5F4175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC00AC88-11D9-482E-B694-6B8A5D5F4175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC00AC88-11D9-482E-B694-6B8A5D5F4175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9C557E4-0A11-4330-A930-BFD3B3C8146A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C557E4-0A11-4330-A930-BFD3B3C8146A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C557E4-0A11-4330-A930-BFD3B3C8146A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C557E4-0A11-4330-A930-BFD3B3C8146A}.Release|Any CPU.Build.0 = Release|Any CPU		
+		{88282CCA-ECB4-47C3-AC9E-C3E74BB2AD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88282CCA-ECB4-47C3-AC9E-C3E74BB2AD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88282CCA-ECB4-47C3-AC9E-C3E74BB2AD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88282CCA-ECB4-47C3-AC9E-C3E74BB2AD00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

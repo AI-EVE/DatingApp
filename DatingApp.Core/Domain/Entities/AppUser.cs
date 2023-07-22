@@ -1,0 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace DatingApp.Core.Domain.Entities;
+
+public class AppUser
+{
+    [Key]
+    public int Id { get; set; }
+    public string? UserName { get; set; }
+}
