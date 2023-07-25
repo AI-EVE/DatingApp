@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user.model';
 import { LoginModel } from '../_models/login.model';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -19,11 +18,7 @@ export class HeaderComponent {
 
   checkLoginSubscription: any;
 
-  constructor(
-    private fb: FormBuilder,
-    public accountService: AccountService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private fb: FormBuilder, public accountService: AccountService) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -62,7 +57,6 @@ export class HeaderComponent {
         console.log(response);
         this.loginForm.reset();
       },
-      error: (err) => this.toastr.error(err.error),
       complete: () => console.log('done'),
     });
   }
