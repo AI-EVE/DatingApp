@@ -1,10 +1,38 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
+import { authGuard } from './_gourds/auth.guard';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () =>
+      import('./home-page/home.modue').then((m) => m.HomeModule),
+    pathMatch: 'full',
+  },
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
+
+  {
+    path: '',
+    canActivate: [authGuard],
+    runGuardsAndResolvers: 'always',
+    children: [
+      { path: 'members', component: MemberListComponent },
+      { path: 'members/:id', component: MemberDetailComponent },
+      { path: 'lists', component: ListsComponent },
+      { path: 'messages', component: MessagesComponent },
+    ],
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

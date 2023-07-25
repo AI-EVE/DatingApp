@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RegisterService } from '../_services/register.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register-form',
@@ -14,7 +15,10 @@ export class RegisterFormComponent implements OnInit {
 
   users: any;
 
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -55,6 +59,7 @@ export class RegisterFormComponent implements OnInit {
       this.registerForm.get('confirmPassword')?.value
     ) {
       console.log('password not match');
+      this.toastr.error('password not match');
       return;
     }
 
@@ -64,7 +69,10 @@ export class RegisterFormComponent implements OnInit {
         this.registerForm.reset();
         this.cancelForm.emit();
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        console.log(err);
+        this.toastr.error(err.error);
+      },
       complete: () => console.log('done'),
     });
   }

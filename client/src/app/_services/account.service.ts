@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LoginModel } from '../_models/login.model';
 import { Subject, map } from 'rxjs';
 import { User } from '../_models/user.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class AccountService {
 
   currentUsername: string | null = null;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   checkLogin() {
     const user: User | null = JSON.parse(localStorage.getItem('user')!);
@@ -24,6 +25,8 @@ export class AccountService {
       this.isLogin = true;
       this.currentUsername = user.username;
       this.propagateUser.next(user);
+
+      this.router.navigateByUrl('/members');
     }
   }
 
@@ -35,6 +38,7 @@ export class AccountService {
           const user = response;
           if (user) {
             this.assertLogin(user);
+            this.router.navigateByUrl('/members');
           }
 
           return user;
@@ -47,6 +51,7 @@ export class AccountService {
     this.isLogin = false;
     this.currentUsername = null;
     this.propagateUser.next(null);
+    this.router.navigateByUrl('/');
   }
 
   setCurrentUser(user: User) {

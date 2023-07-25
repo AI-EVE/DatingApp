@@ -20,7 +20,8 @@
   }
 }
 
-.user {
+.user,
+.user.active {
   color: gold;
   font-weight: bold;
   margin-right: 1rem;

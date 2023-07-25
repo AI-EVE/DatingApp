@@ -13,22 +13,35 @@
       <app-burger-icon></app-burger-icon>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="isLogin">
-        <li class="nav-item">
-          <a class="nav-link user">Welcome {{ currentUsername }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active">Matches</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Lists</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Messages</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Edit Profile</a>
-        </li>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ng-container *ngIf="isLogin">
+          <li class="nav-item">
+            <a
+              class="nav-link user"
+              routerLink="/home"
+              routerLinkActive="active"
+              >Welcome {{ currentUsername }}</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/members" routerLinkActive="active"
+              >Matches</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/lists" routerLinkActive="active"
+              >Lists</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/messages" routerLinkActive="active"
+              >Messages</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">Edit Profile</a>
+          </li>
+        </ng-container>
       </ul>
       <form class="d-flex" [formGroup]="loginForm" (ngSubmit)="onLogin($event)">
         <input

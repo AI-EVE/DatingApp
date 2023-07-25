@@ -11,21 +11,25 @@ export class HomePageComponent {
   isLogin: boolean = false;
   isRegister: boolean = false;
   registerForm!: FormGroup;
+  propagateUserSubscription: any;
 
   constructor(private accountService: AccountService) {}
 
   ngOnInit() {
-    this.accountService.propagateUser.subscribe({
-      next: () => {
-        this.updateUserState();
-      },
-    });
+    this.propagateUserSubscription =
+      this.accountService.propagateUser.subscribe({
+        next: () => {
+          this.updateUserState();
+        },
+      });
 
     this.registerForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
     });
+
+    this.updateUserState();
   }
 
   updateUserState() {
@@ -38,5 +42,9 @@ export class HomePageComponent {
 
   registerMode() {
     this.isRegister = true;
+  }
+
+  ngOnDestroy() {
+    this.propagateUserSubscription.unsubscribe();
   }
 }
