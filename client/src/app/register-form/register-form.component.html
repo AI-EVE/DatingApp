@@ -1,0 +1,51 @@
+<form
+  class="register-form"
+  [formGroup]="registerForm"
+  (ngSubmit)="onRegister($event)"
+>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      class="form-control"
+      id="username"
+      placeholder="Username"
+      formControlName="username"
+    />
+  </div>
+  <div class="form-group">
+    <label for="favoriteUser">favoriteUser</label>
+    <select class="form-select" id="favoriteUser" formArrayName="users">
+      <option value="">Pick One</option>
+      <option *ngFor="let user of users" [value]="user.value.username">
+        {{ user.value.username }}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      id="password"
+      placeholder="Password"
+      formControlName="password"
+    />
+  </div>
+  <div class="form-group">
+    <label for="confirm-password">Confirm Password</label>
+    <input
+      type="password"
+      class="form-control"
+      id="confirm-password"
+      placeholder="Confirm Password"
+      formControlName="confirmPassword"
+    />
+  </div>
+  <div class="btn-grp">
+    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="button" class="btn btn-outline-danger" (click)="onCancel()">
+      Cancel
+    </button>
+  </div>
+</form>

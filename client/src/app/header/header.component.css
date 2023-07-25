@@ -1,0 +1,43 @@
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+  }
+  .btn {
+    width: fit-content;
+    margin: 0 auto;
+  }
+  .form-control {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 991px) {
+  form {
+    margin-top: 10px;
+  }
+  .order {
+    order: 0;
+  }
+}
+
+.user {
+  color: gold;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.collapse {
+  justify-content: flex-end;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+}
+
+nav {
+  background: radial-gradient(circle at center, #222, #000);
+}

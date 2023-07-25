@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from './_services/account.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,10 @@ export class AppComponent implements OnInit {
   title: string = 'client';
   users: any;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit() {
     this.httpClient.get('https://localhost:5001/api/users').subscribe({
@@ -22,5 +26,7 @@ export class AppComponent implements OnInit {
       error: (err) => console.log(err),
       complete: () => console.log('done'),
     });
+
+    this.accountService.checkLogin();
   }
 }

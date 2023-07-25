@@ -1,0 +1,27 @@
+<div class="container" style="text-align: center">
+  <div *ngIf="!isRegister">
+    <h1>Find your match</h1>
+    <p>
+      Come on in to view your match...{{
+        isLogin
+          ? " Learn more from the link below"
+          : " all you need to do is sign up"
+      }}!
+    </p>
+    <div class="btn-container">
+      <button
+        class="btn btn-outline-success"
+        *ngIf="!isLogin"
+        (click)="registerMode()"
+      >
+        Register
+      </button>
+      <button class="btn btn-primary">Learn more</button>
+    </div>
+  </div>
+
+  <app-register-form
+    (cancelForm)="onCancel()"
+    *ngIf="isRegister"
+  ></app-register-form>
+</div>
