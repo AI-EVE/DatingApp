@@ -17,7 +17,9 @@ app.UseMiddleware<ExceptionMiddleWare>();
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseRouting();
+
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
 app.UseAuthentication();
 
