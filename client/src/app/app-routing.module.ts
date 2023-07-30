@@ -15,10 +15,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'home', redirectTo: '' },
-  {
-    path: 'not-found',
-    component: NotFoundComponent,
-  },
+
   {
     path: '',
     canActivate: [authGuard],
@@ -29,6 +26,14 @@ const routes: Routes = [
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
     ],
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
   },
 ];
 

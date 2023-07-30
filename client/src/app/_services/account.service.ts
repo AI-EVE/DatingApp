@@ -27,8 +27,6 @@ export class AccountService {
       this.isLogin = true;
       this.currentUsername = user.username;
       this.propagateUser.next(user);
-
-      this.router.navigateByUrl('/members');
     }
   }
 
