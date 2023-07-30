@@ -1,12 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace DatingApp.Core.Domain.Entities;
 
-[Table("Users")]
 public class AppUser
 {
-    [Key]
     public int Id { get; set; }
     public string? UserName { get; set; }
     public byte[]? PasswordHash { get; set; }
@@ -21,7 +16,13 @@ public class AppUser
     public string? Interests { get; set; }
     public string? City { get; set; }
     public string? Country { get; set; }
-    public List<Photo>? Photos { get; set; } = new();
+    public List<Photo> Photos { get; set; }
+    public int Age
+    {
+        get {
+            return DateOfBirth.CalculateAge();
+        }
+    }
 
 
 }

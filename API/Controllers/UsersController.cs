@@ -1,8 +1,8 @@
-using AutoMapper;
-using DatingApp.Core.Domain.RepositoryContracts;
-using DatingApp.Core.DTOs;
+using DatingApp.Core.Domain.Entities;
+using DatingApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -10,28 +10,27 @@ namespace API.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly IUsersRepository _usersRepository;
-        private readonly IMapper _mapper;
+        
+        private readonly DataContext _context;
 
-        public UsersController(IUsersRepository usersRepository, IMapper mapper)
+        public UsersController(DataContext context)
         {
-            _usersRepository = usersRepository;
-            _mapper = mapper;
+            _context = context;
         }
         
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
-            var users = await _usersRepository.GetMembersAsync();
+            var users = await _context.Users.AsNoTracking().Include(u => u.Photos).ToListAsync();
 
             return Ok(users);
         }
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDTO>> GetUser(string username)
+        public async Task<ActionResult<AppUser>> GetUser(string username)
         {
-            var user = await _usersRepository.GetMemberAsync(username);
+            var user = await _context.Users.AsNoTracking().Include(u => u.Photos).SingleOrDefaultAsync(u => u.UserName == username);
 
             return user;
         }
