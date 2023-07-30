@@ -1,3 +1,5 @@
+using DatingApp.Core.DTOs;
+
 namespace DatingApp.Core.Domain.Entities;
 
 public class AppUser
@@ -27,7 +29,7 @@ public class AppUser
 
 }
 
-public static class DateTimeExtensions
+public static class AppUserExtensions
 {
     public static int CalculateAge(this DateOnly dateOfBirth)
     {
@@ -36,5 +38,23 @@ public static class DateTimeExtensions
         if (dateOfBirth.AddYears(age) > today) age--;
 
         return age;
+    }
+
+    public static AppUserDTO ToMemberDTO(this AppUser appUser) 
+    {
+        return new AppUserDTO() {
+            Id = appUser.Id,
+            UserName = appUser.UserName,
+            KnownAs = appUser.KnownAs,
+            Created = appUser.Created,
+            LastActive = appUser.LastActive,
+            Gender = appUser.Gender,
+            Introduction = appUser.Introduction,
+            LookingFor = appUser.LookingFor,
+            Interests = appUser.Interests,
+            City = appUser.City,
+            Country = appUser.Country,
+            Photos = appUser.Photos.Select(photo => photo.ToPhotoDTO()).ToList()        
+        };
     }
 }

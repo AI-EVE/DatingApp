@@ -46,7 +46,7 @@ namespace API.Controllers
         } 
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<LoginResponseDTO>> Login(LoginDTO loginDTO)
         {
             var user = await _context.Users?.SingleOrDefaultAsync(x => x.UserName == loginDTO.Username.ToLower());
 
@@ -61,7 +61,7 @@ namespace API.Controllers
                 if(computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
             }
 
-            return new UserDTO
+            return new LoginResponseDTO
             {
                 Username = user.UserName,
                 Token = _tokenGenerator.GenerateToken(user)

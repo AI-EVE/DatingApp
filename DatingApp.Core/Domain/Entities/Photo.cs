@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using DatingApp.Core.DTOs;
 
 namespace DatingApp.Core.Domain.Entities;
 
@@ -12,4 +13,14 @@ public class Photo
 
     [JsonIgnore]
     public AppUser AppUser { get; set; }
+}
+
+public static class PhotoExtensions {
+    public static PhotoDTO ToPhotoDTO(this Photo photo) {
+        return new PhotoDTO {
+            Id = photo.Id,
+            Url = photo.Url,
+            IsMain = photo.IsMain
+        };
+    }
 }

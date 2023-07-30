@@ -1,8 +1,7 @@
-using DatingApp.Core.Domain.Entities;
-using DatingApp.Infrastructure.Data;
+using DatingApp.Core.DTOs;
+using DatingApp.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -11,28 +10,28 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         
-        private readonly DataContext _context;
+        private readonly IUsersService _usersService;
 
-        public UsersController(DataContext context)
+        public UsersController(IUsersService usersService)
         {
-            _context = context;
+            _usersService = usersService;
         }
         
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetUsers()
         {
-            var users = await _context.Users.AsNoTracking().Include(u => u.Photos).ToListAsync();
+            var users = await _usersService.GetUsersAsync();
 
             return Ok(users);
         }
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<AppUser>> GetUser(string username)
+        public async Task<ActionResult<AppUserDTO>> GetUser(string username)
         {
-            var user = await _context.Users.AsNoTracking().Include(u => u.Photos).SingleOrDefaultAsync(u => u.UserName == username);
+            var user = await _usersService.GetUserByUsernameAsync(username);
 
-            return user;
+            return Ok(user);
         }
     }
 }

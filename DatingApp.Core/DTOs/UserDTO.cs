@@ -1,6 +1,6 @@
 namespace DatingApp.Core.DTOs;
 
-public class UserDTO
+public class LoginResponseDTO
 {
     public string Username { get; set; } = null!;
     public string Token { get; set; } = null!;    
