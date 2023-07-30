@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./home-page/home.modue').then((m) => m.HomeModule),
+      import('./home-page/home.module').then((m) => m.HomeModule),
     pathMatch: 'full',
   },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
@@ -28,6 +28,11 @@ const routes: Routes = [
     ],
   },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
+  {
+    path: 'not-fount',
+    loadChildren: () =>
+      import('./errors/erros.module').then((m) => m.ErrorsModule),
+  },
 ];
 
 @NgModule({
