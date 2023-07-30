@@ -17,7 +17,11 @@ public static class ApplicationServicesExtensions
             options.UseSqlite(config.GetConnectionString("DefaultConnection"));
         });
 
-        services.AddCors();
+        services.AddCors(options => {
+            options.AddDefaultPolicy(builder => {
+                builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+            });
+        });
 
         services.AddScoped<IUsersService, UsersService>();
 

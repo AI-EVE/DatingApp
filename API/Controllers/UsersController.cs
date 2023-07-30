@@ -19,7 +19,6 @@ namespace API.Controllers
         
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetUsers()
         {
             var users = await _usersService.GetUsersAsync();
