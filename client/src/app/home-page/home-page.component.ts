@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../_services/account.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home-page',
@@ -10,7 +9,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class HomePageComponent {
   isLogin: boolean = false;
   isRegister: boolean = false;
-  registerForm!: FormGroup;
   propagateUserSubscription: any;
 
   constructor(private accountService: AccountService) {}
@@ -23,17 +21,12 @@ export class HomePageComponent {
         },
       });
 
-    this.registerForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required]),
-    });
-
     this.updateUserState();
   }
 
   updateUserState() {
     this.isLogin = this.accountService.isLogin;
+    if (this.isLogin) this.isRegister = false;
   }
 
   onCancel() {

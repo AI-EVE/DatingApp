@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
-import { User } from '../_models/user.model';
+import { LoginResponse } from '../_models/LoginResponse.model';
 import { LoginModel } from '../_models/login.model';
 
 @Component({
@@ -18,16 +18,16 @@ export class HeaderComponent {
 
   checkLoginSubscription: any;
 
-  constructor(private fb: FormBuilder, public accountService: AccountService) {}
+  constructor(public accountService: AccountService) {}
 
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      username: [''],
-      password: [''],
+    this.loginForm = new FormGroup({
+      username: new FormControl(''),
+      password: new FormControl(''),
     });
 
     this.checkLoginSubscription = this.accountService.propagateUser.subscribe({
-      next: (user: User | null) => {
+      next: (loginResponse: LoginResponse | null) => {
         this.updateUserState();
       },
     });
@@ -51,7 +51,7 @@ export class HeaderComponent {
     );
   }
 
-  login(user: LoginModel) {
+  login(loginResponse: LoginModel) {
     this.accountService.login(this.loginForm.value).subscribe({
       next: (response) => {
         console.log(response);

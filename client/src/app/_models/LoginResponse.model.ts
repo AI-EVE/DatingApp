@@ -1,4 +1,4 @@
-export class User {
+export class LoginResponse {
   username: string;
   token: string;
   constructor(username: string, token: string) {

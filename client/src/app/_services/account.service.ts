@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginModel } from '../_models/login.model';
 import { Subject, map } from 'rxjs';
-import { User } from '../_models/user.model';
+import { LoginResponse } from '../_models/LoginResponse.model';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class AccountService {
   baseUrl = 'https://localhost:5001/api/';
 
-  propagateUser = new Subject<User | null>();
+  propagateUser = new Subject<LoginResponse | null>();
 
   isLogin: boolean = false;
 
@@ -20,7 +20,9 @@ export class AccountService {
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   checkLogin() {
-    const user: User | null = JSON.parse(localStorage.getItem('user')!);
+    const user: LoginResponse | null = JSON.parse(
+      localStorage.getItem('user')!
+    );
     if (user) {
       this.isLogin = true;
       this.currentUsername = user.username;
@@ -32,16 +34,16 @@ export class AccountService {
 
   login(model: LoginModel) {
     return this.httpClient
-      .post<User>(`${this.baseUrl}account/login`, model)
+      .post<LoginResponse>(`${this.baseUrl}account/login`, model)
       .pipe(
-        map((response: User) => {
-          const user = response;
-          if (user) {
-            this.assertLogin(user);
+        map((response: LoginResponse) => {
+          const loginResponse = response;
+          if (loginResponse) {
+            this.assertLogin(loginResponse);
             this.router.navigateByUrl('/members');
           }
 
-          return user;
+          return loginResponse;
         })
       );
   }
@@ -54,14 +56,14 @@ export class AccountService {
     this.router.navigateByUrl('/');
   }
 
-  setCurrentUser(user: User) {
+  setCurrentUser(user: LoginResponse) {
     this.propagateUser.next(user);
   }
 
-  assertLogin(user: User) {
+  assertLogin(loginResponse: LoginResponse) {
     this.isLogin = true;
-    this.currentUsername = user.username;
-    localStorage.setItem('user', JSON.stringify(user));
-    this.propagateUser.next(user);
+    this.currentUsername = loginResponse.username;
+    localStorage.setItem('user', JSON.stringify(loginResponse));
+    this.propagateUser.next(loginResponse);
   }
 }
