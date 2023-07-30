@@ -10,12 +10,19 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddIdentityServices(builder.Configuration);
 
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policy => {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+    });
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleWare>();
 
-// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseCors();
 

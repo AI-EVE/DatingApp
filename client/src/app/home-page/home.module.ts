@@ -9,17 +9,12 @@ import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [HomePageComponent, RegisterFormComponent],
   imports: [
-    RouterModule.forChild([
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
-      { path: 'home', component: HomePageComponent },
-    ]),
+    RouterModule.forChild([{ path: '', component: HomePageComponent }]),
     CommonModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
   ],
-  exports: [],
-  providers: [],
 })
 export class HomeModule {}

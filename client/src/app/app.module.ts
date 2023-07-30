@@ -8,24 +8,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BurgerIconComponent } from './burger-icon/burger-icon.component';
-import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { MemberListComponent } from './members/member-list/member-list.component';
-import { MessagesComponent } from './messages/messages.component';
-import { ListsComponent } from './lists/lists.component';
 import { SharedModule } from './_modules/shared.module';
 import { ErrosInterceptorInterceptor } from './_interceptors/erros-interceptor.interceptor';
-import { ErrorsModule } from './errors/erros.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    BurgerIconComponent,
-    MemberDetailComponent,
-    MemberListComponent,
-    MessagesComponent,
-    ListsComponent,
-  ],
+  declarations: [AppComponent, HeaderComponent, BurgerIconComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

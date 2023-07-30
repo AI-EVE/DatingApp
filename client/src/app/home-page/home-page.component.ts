@@ -21,6 +21,8 @@ export class HomePageComponent {
         },
       });
 
+    console.log(this.accountService.isLogin);
+
     this.updateUserState();
   }
 

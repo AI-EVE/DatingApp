@@ -5,7 +5,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { authGuard } from './_gourds/auth.guard';
-import { ErrorsModule } from './errors/erros.module';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -14,8 +14,11 @@ const routes: Routes = [
       import('./home-page/home.module').then((m) => m.HomeModule),
     pathMatch: 'full',
   },
-  { path: 'home', redirectTo: '', pathMatch: 'full' },
-
+  { path: 'home', redirectTo: '' },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
+  },
   {
     path: '',
     canActivate: [authGuard],
@@ -27,18 +30,11 @@ const routes: Routes = [
       { path: 'messages', component: MessagesComponent },
     ],
   },
-  { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
-  {
-    path: 'not-fount',
-    loadChildren: () =>
-      import('./errors/erros.module').then((m) => m.ErrorsModule),
-  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
-    ErrorsModule,
   ],
   exports: [RouterModule],
 })
