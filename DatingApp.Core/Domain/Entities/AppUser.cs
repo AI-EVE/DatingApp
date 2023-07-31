@@ -54,7 +54,9 @@ public static class AppUserExtensions
             Interests = appUser.Interests,
             City = appUser.City,
             Country = appUser.Country,
-            Photos = appUser.Photos.Select(photo => photo.ToPhotoDTO()).ToList()        
+            Photos = appUser.Photos.Select(photo => photo.ToPhotoDTO()).ToList(),
+            Age = appUser.Age,
+            PhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain).Url        
         };
     }
 }

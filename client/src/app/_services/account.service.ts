@@ -4,12 +4,13 @@ import { LoginModel } from '../_models/login.model';
 import { Subject, map } from 'rxjs';
 import { LoginResponse } from '../_models/LoginResponse.model';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
 
   propagateUser = new Subject<LoginResponse | null>();
 
@@ -17,16 +18,16 @@ export class AccountService {
 
   currentUsername: string | null = null;
 
+  token: string | null = null;
+
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   checkLogin() {
     const user: LoginResponse | null = JSON.parse(
-      localStorage.getItem('user')!
+      localStorage.getItem('loginResponse')!
     );
     if (user) {
-      this.isLogin = true;
-      this.currentUsername = user.username;
-      this.propagateUser.next(user);
+      this.assertLogin(user);
     }
   }
 
@@ -37,6 +38,10 @@ export class AccountService {
         map((response: LoginResponse) => {
           const loginResponse = response;
           if (loginResponse) {
+            localStorage.setItem(
+              'loginResponse',
+              JSON.stringify(loginResponse)
+            );
             this.assertLogin(loginResponse);
             this.router.navigateByUrl('/members');
           }
@@ -47,9 +52,10 @@ export class AccountService {
   }
 
   logout() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('loginResponse');
     this.isLogin = false;
     this.currentUsername = null;
+    this.token = null;
     this.propagateUser.next(null);
     this.router.navigateByUrl('/');
   }
@@ -61,7 +67,7 @@ export class AccountService {
   assertLogin(loginResponse: LoginResponse) {
     this.isLogin = true;
     this.currentUsername = loginResponse.username;
-    localStorage.setItem('user', JSON.stringify(loginResponse));
+    this.token = loginResponse.token;
     this.propagateUser.next(loginResponse);
   }
 }

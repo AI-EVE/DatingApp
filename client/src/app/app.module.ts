@@ -10,9 +10,26 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BurgerIconComponent } from './burger-icon/burger-icon.component';
 import { SharedModule } from './_modules/shared.module';
 import { ErrosInterceptorInterceptor } from './_interceptors/erros-interceptor.interceptor';
+import { ListsComponent } from './lists/lists.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MessagesComponent } from './messages/messages.component';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, BurgerIconComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    BurgerIconComponent,
+    ListsComponent,
+    MemberListComponent,
+    MemberDetailComponent,
+    MessagesComponent,
+    NotFoundComponent,
+    MemberCardComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,6 +42,11 @@ import { ErrosInterceptorInterceptor } from './_interceptors/erros-interceptor.i
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrosInterceptorInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
       multi: true,
     },
   ],
