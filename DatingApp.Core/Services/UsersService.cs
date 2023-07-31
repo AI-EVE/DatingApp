@@ -9,13 +9,13 @@ public class UsersService : IUsersService
 {
     private readonly IUsersGetRepository _usersGetRepository;
     private readonly IUsersUpdateRepository _usersUpdateRepository;
-    private readonly ISaveChangesRepository _usersDeleteRepository;
+    private readonly ISaveChangesRepository _saveChangesRepository;
 
-    public UsersService(IUsersGetRepository usersGetRepository, IUsersUpdateRepository usersUpdateRepository, ISaveChangesRepository usersDeleteRepository)
+    public UsersService(IUsersGetRepository usersGetRepository, IUsersUpdateRepository usersUpdateRepository, ISaveChangesRepository saveChangesRepository)
     {
         _usersGetRepository = usersGetRepository;
         _usersUpdateRepository = usersUpdateRepository;
-        _usersDeleteRepository = usersDeleteRepository;
+        _saveChangesRepository = saveChangesRepository;
     }
     
     public async Task<AppUserDTO> GetUserByIdAsync(int Id)
@@ -36,14 +36,19 @@ public class UsersService : IUsersService
         return users.Select(user => user.ToMemberDTO());
     }
 
-    public async Task<bool> UpdateUserAsync(int Id)
+    public async Task<bool> UpdateUserAsync(string username, AppUserUpdateDTO userUpdateDTO)
     {
-        var userToUpdate = await _usersGetRepository.GetUserByIdAsync(Id);
+        var userToUpdate = await _usersGetRepository.GetUserByUsernameAsync(username);
         if (userToUpdate == null) return false;
 
         // Update Logic Here
+        userToUpdate.Introduction = userUpdateDTO.Introduction;
+        userToUpdate.LookingFor = userUpdateDTO.LookingFor;
+        userToUpdate.Interests = userUpdateDTO.Interests;
+        userToUpdate.City = userUpdateDTO.City;
+        userToUpdate.Country = userUpdateDTO.Country;
 
-        _usersUpdateRepository.UpdateUser(userToUpdate);
-        return await _usersDeleteRepository.SaveChangesAsync();
+
+        return await _saveChangesRepository.SaveChangesAsync();
     }
 }

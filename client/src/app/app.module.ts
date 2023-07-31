@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BurgerIconComponent } from './burger-icon/burger-icon.component';
 import { SharedModule } from './_modules/shared.module';
 import { ErrosInterceptorInterceptor } from './_interceptors/erros-interceptor.interceptor';
@@ -17,6 +17,9 @@ import { MessagesComponent } from './messages/messages.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { SpinnerInterceptor } from './_interceptors/spinner.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,12 +32,15 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     MessagesComponent,
     NotFoundComponent,
     MemberCardComponent,
+    MemberEditComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
     SharedModule,
   ],
@@ -47,6 +53,11 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
       multi: true,
     },
   ],

@@ -16,12 +16,12 @@ public class UsersGetRepository : IUsersGetRepository
     
     public async Task<AppUser?> GetUserByIdAsync(int id)
     {
-        return await _context.Users.AsNoTracking().Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
+        return await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<AppUser?> GetUserByUsernameAsync(string username)
     {
-        return await _context.Users.AsNoTracking().Include(u => u.Photos).FirstOrDefaultAsync(u => u.UserName == username);
+        return await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.UserName == username);
     }
 
     public async Task<IEnumerable<AppUser>> GetUsersAsync()

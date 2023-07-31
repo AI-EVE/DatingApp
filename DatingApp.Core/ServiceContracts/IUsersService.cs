@@ -7,5 +7,5 @@ public interface IUsersService
     Task<IEnumerable<AppUserDTO>> GetUsersAsync();
     Task<AppUserDTO> GetUserByUsernameAsync(string username);    
     Task<AppUserDTO> GetUserByIdAsync(int Id);
-    Task<bool> UpdateUserAsync(int Id);    
+    Task<bool> UpdateUserAsync(string username, AppUserUpdateDTO userUpdateDTO);    
 }
