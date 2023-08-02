@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using DatingApp.Core.Domain.Entities;
 using DatingApp.Core.Domain.RepositoryContracts;
 using DatingApp.Core.DTOs;
@@ -18,17 +19,26 @@ public class UsersService : IUsersService
         _saveChangesRepository = saveChangesRepository;
     }
     
-    public async Task<AppUserDTO> GetUserByIdAsync(int Id)
+    public async Task<AppUserDTO?> GetUserByIdAsync(int Id)
     {
         var user = await _usersGetRepository.GetUserByIdAsync(Id);
-        return user.ToMemberDTO();
+        return user?.ToMemberDTO();
     }
 
-    public async Task<AppUserDTO> GetUserByUsernameAsync(string username)
+    public async Task<AppUserDTO?> GetUserByUsernameAsync(string username)
     {
         var user = await _usersGetRepository.GetUserByUsernameAsync(username);
-        return user.ToMemberDTO();
+        return user?.ToMemberDTO();
     }
+
+
+    public async Task<AppUser?> GetUserAsyncNoDTO(string username)
+    {
+        var user = await _usersGetRepository.GetUserByUsernameAsync(username);
+        return user;
+    }
+
+    
 
     public async Task<IEnumerable<AppUserDTO>> GetUsersAsync()
     {
@@ -49,6 +59,10 @@ public class UsersService : IUsersService
         userToUpdate.Country = userUpdateDTO.Country;
 
 
+        return await _saveChangesRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> SaveChangesAsync() {
         return await _saveChangesRepository.SaveChangesAsync();
     }
 }

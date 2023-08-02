@@ -20,6 +20,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { SpinnerInterceptor } from './_interceptors/spinner.interceptor';
+import { PhotoEditorComponent } from './photo-editor/photo-editor.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SpinnerInterceptor } from './_interceptors/spinner.interceptor';
     MemberCardComponent,
     MemberEditComponent,
     SpinnerComponent,
+    PhotoEditorComponent,
   ],
   imports: [
     BrowserModule,

@@ -20,6 +20,8 @@ export class AccountService {
 
   token: string | null = null;
 
+  photoUrl: string | null = null;
+
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   checkLogin() {
@@ -56,6 +58,7 @@ export class AccountService {
     this.isLogin = false;
     this.currentUsername = null;
     this.token = null;
+    this.photoUrl = null;
     this.propagateUser.next(null);
     this.router.navigateByUrl('/');
   }
@@ -64,10 +67,35 @@ export class AccountService {
     this.propagateUser.next(user);
   }
 
+  updateLoginResponse() {
+    const loginResponse: LoginResponse | null = JSON.parse(
+      localStorage.getItem('loginResponse')!
+    );
+
+    console.log(loginResponse);
+
+    if (!loginResponse) {
+      this.isLogin = false;
+      this.currentUsername = null;
+      this.token = null;
+      this.photoUrl = null;
+      this.propagateUser.next(null);
+      return;
+    }
+
+    loginResponse.token = this.token!;
+    loginResponse.photoUrl = this.photoUrl!;
+    loginResponse.username = this.currentUsername!;
+    localStorage.setItem('loginResponse', JSON.stringify(loginResponse));
+
+    this.propagateUser.next(loginResponse);
+  }
+
   assertLogin(loginResponse: LoginResponse) {
     this.isLogin = true;
     this.currentUsername = loginResponse.username;
     this.token = loginResponse.token;
+    this.photoUrl = loginResponse.photoUrl;
     this.propagateUser.next(loginResponse);
   }
 }

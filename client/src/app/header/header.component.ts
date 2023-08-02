@@ -16,6 +16,8 @@ export class HeaderComponent {
 
   currentUsername: string | null = null;
 
+  photoUrl: string | null = null;
+
   checkLoginSubscription: any;
 
   constructor(public accountService: AccountService) {}
@@ -68,6 +70,7 @@ export class HeaderComponent {
   updateUserState() {
     this.currentUsername = this.accountService.currentUsername;
     this.isLogin = this.accountService.isLogin;
+    this.photoUrl = this.accountService.photoUrl;
   }
 
   ngOnDestroy() {

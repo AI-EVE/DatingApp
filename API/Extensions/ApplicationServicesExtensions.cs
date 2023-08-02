@@ -1,3 +1,4 @@
+using API.Models;
 using DatingApp.Core.Domain.RepositoryContracts;
 using DatingApp.Core.ServiceContracts;
 using DatingApp.Core.Services;
@@ -26,5 +27,9 @@ public static class ApplicationServicesExtensions
         services.AddScoped<ISaveChangesRepository, SaveChangesRepository>();
 
         services.AddScoped<ITokenGenerator, TokenGenerator>();
+
+        services.AddScoped<IPhotosService, PhotosService>();
+
+        services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
     } 
 }
