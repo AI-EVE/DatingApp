@@ -75,6 +75,11 @@ export class PhotoEditorComponent {
       if (response) {
         const photo = JSON.parse(response);
         this.appUser?.photos.push(photo);
+        if (photo.isMain) {
+          this.accountService.photoUrl = photo.url;
+          this.appUser!.photoUrl = photo.url;
+          this.accountService.updateLoginResponse();
+        }
       }
     };
   }

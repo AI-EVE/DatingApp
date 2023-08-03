@@ -1,0 +1,27 @@
+<div style="margin-bottom: 5px" class="form-group">
+  <label for="{{ label }}">{{
+    label.slice(0, 1).toUpperCase() + label.slice(1)
+  }}</label>
+  <input
+    [class.is-invalid]="ngControl.invalid && ngControl.touched"
+    type="{{ type }}"
+    class="form-control"
+    id="{{ label }}"
+    [formControl]="control"
+    placeholder="{{ label.slice(0, 1).toUpperCase() + label.slice(1) }}"
+  />
+  <div class="invalid-feedback" *ngIf="control.errors?.['required']">
+    This Field is Required
+  </div>
+  <div class="invalid-feedback" *ngIf="control.errors?.['minlength']">
+    You must enter at least
+    {{ control.errors?.['minlength'].requiredLength }} characters
+  </div>
+  <div class="invalid-feedback" *ngIf="control.errors?.['maxlength']">
+    You cant enter more than
+    {{ control.errors?.['maxlength'].requiredLength }} characters
+  </div>
+  <div class="invalid-feedback" *ngIf="control.errors?.['notMatch']">
+    Passwords do not match
+  </div>
+</div>

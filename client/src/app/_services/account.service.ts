@@ -98,4 +98,23 @@ export class AccountService {
     this.photoUrl = loginResponse.photoUrl;
     this.propagateUser.next(loginResponse);
   }
+
+  register(model: any) {
+    return this.httpClient
+      .post<LoginResponse>(`${this.baseUrl}account/register`, model)
+      .pipe(
+        map((response) => {
+          const loginResponse = response;
+          if (loginResponse) {
+            localStorage.setItem(
+              'loginResponse',
+              JSON.stringify(loginResponse)
+            );
+            this.assertLogin(loginResponse);
+          }
+
+          return loginResponse;
+        })
+      );
+  }
 }

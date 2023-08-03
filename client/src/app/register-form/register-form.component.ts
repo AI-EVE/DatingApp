@@ -1,7 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { RegisterService } from '../_services/register.service';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
+import { LoginResponse } from '../_models/LoginResponse.model';
 
 @Component({
   selector: 'app-register-form',
@@ -10,41 +18,45 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterFormComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
-
   @Output() cancelForm = new EventEmitter<void>();
-
   users: any;
+  maxDate: Date = new Date();
+  validationErrors: string[] | undefined;
 
   constructor(
-    private registerService: RegisterService,
-    private toastr: ToastrService
+    private accountService: AccountService,
+    private toastr: ToastrService,
+    private fBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.registerForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [
-        Validators.required,
-        this.confirmPasswordValidator.bind(this),
-      ]),
-      users: new FormArray([]),
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+
+    this.registerForm = this.fBuilder.group({
+      gender: ['male'],
+      username: ['', [Validators.required]],
+      knownAs: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      dateOfBirth: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(15),
+        ],
+      ],
+      confirmPassword: [
+        '',
+        [Validators.required, this.confirmPasswordValidator.bind(this)],
+      ],
+      users: this.fBuilder.array([]),
     });
 
-    this.registerService.getUsers().subscribe({
-      next: (users: any) => {
-        users.forEach((user: any) => {
-          (this.registerForm.get('users') as FormArray).push(
-            new FormGroup({
-              username: new FormControl(user.userName),
-            })
-          );
-        });
-
-        this.users = (this.registerForm.get('users') as FormArray).controls;
-
-        console.log(this.users);
-      },
+    this.registerForm.controls['password'].valueChanges.subscribe(() => {
+      this.registerForm.controls['confirmPassword'].updateValueAndValidity();
     });
   }
 
@@ -54,25 +66,30 @@ export class RegisterFormComponent implements OnInit {
 
   onRegister(event: Event) {
     event.preventDefault();
-    if (
-      this.registerForm.get('password')?.value !==
-      this.registerForm.get('confirmPassword')?.value
-    ) {
-      console.log('password not match');
-      this.toastr.error('password not match');
+    this.registerForm.markAllAsTouched();
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
-
-    this.registerService.register(this.registerForm.value).subscribe({
-      next: (response) => {
-        console.log(response);
-        this.registerForm.reset();
-        this.cancelForm.emit();
+    if (
+      this.registerForm.controls['password'].value !==
+      this.registerForm.controls['confirmPassword'].value
+    ) {
+      this.toastr.error('Password not match');
+      return;
+    }
+    const dateOfBirth = this.getDateOnly(
+      this.registerForm.controls['dateOfBirth'].value
+    );
+    const values = { ...this.registerForm.value, dateOfBirth };
+    console.log(values);
+    this.accountService.register(values).subscribe({
+      next: (_) => {
+        this.router.navigateByUrl('/members');
       },
-      error: (err) => {
-        console.log(err);
+      error: (error) => {
+        this.validationErrors = error;
       },
-      complete: () => console.log('done'),
     });
   }
 
@@ -81,9 +98,20 @@ export class RegisterFormComponent implements OnInit {
       this.registerForm.get('password')?.value !==
       this.registerForm.get('confirmPassword')?.value
     ) {
+      console.log(this.registerForm.valid);
       console.log('password not match');
       return { notMatch: true };
     }
     return null;
+  }
+
+  private getDateOnly(date: string | undefined) {
+    if (!date) return null;
+    let dateObj = new Date(date);
+    return new Date(
+      dateObj.setMinutes(dateObj.getMinutes() - dateObj.getTimezoneOffset())
+    )
+      .toISOString()
+      .slice(0, 10);
   }
 }

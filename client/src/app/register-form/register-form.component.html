@@ -3,17 +3,59 @@
   [formGroup]="registerForm"
   (ngSubmit)="onRegister($event)"
 >
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input
-      type="text"
-      class="form-control"
-      id="username"
-      placeholder="Username"
-      formControlName="username"
-    />
+  <div class="mb-3">
+    <label style="margin-right: 10px">I'm a: </label>
+    <label class="form-check-label">
+      <input
+        type="radio"
+        class="form-check-input"
+        value="male"
+        formControlName="gender"
+      />
+      Male
+    </label>
+    <label class="form-check-label">
+      <input
+        type="radio"
+        class="form-check-input ms-3"
+        value="female"
+        formControlName="gender"
+      />
+      Female
+    </label>
   </div>
-  <div class="form-group">
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['username'])"
+    type="text"
+    label="username"
+  ></app-form-control>
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['knownAs'])"
+    type="text"
+    label="knownAs"
+  ></app-form-control>
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['dateOfBirth'])"
+    type="date"
+    label="DateOfBirth"
+  ></app-form-control>
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['city'])"
+    type="text"
+    label="city"
+  ></app-form-control>
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['country'])"
+    type="text"
+    label="country"
+  ></app-form-control>
+
+  <!-- <div class="form-group">
     <label for="favoriteUser">favoriteUser</label>
     <select class="form-select" id="favoriteUser" formArrayName="users">
       <option value="">Pick One</option>
@@ -21,27 +63,28 @@
         {{ user.value.username }}
       </option>
     </select>
+  </div> -->
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['password'])"
+    type="password"
+    label="password"
+  ></app-form-control>
+
+  <app-form-control
+    [formControl]="$any(registerForm.controls['confirmPassword'])"
+    type="password"
+    label="confirmPassword"
+  ></app-form-control>
+
+  <div class="row" *ngIf="validationErrors">
+    <ul class="text-danger">
+      <li *ngFor="let error of validationErrors">
+        {{ error }}
+      </li>
+    </ul>
   </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      placeholder="Password"
-      formControlName="password"
-    />
-  </div>
-  <div class="form-group">
-    <label for="confirm-password">Confirm Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="confirm-password"
-      placeholder="Confirm Password"
-      formControlName="confirmPassword"
-    />
-  </div>
+
   <div class="btn-grp">
     <button type="submit" class="btn btn-primary">Register</button>
     <button type="button" class="btn btn-outline-danger" (click)="onCancel()">

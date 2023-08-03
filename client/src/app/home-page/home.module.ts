@@ -5,9 +5,14 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterFormComponent } from '../register-form/register-form.component';
 import { ToastrModule } from 'ngx-toastr';
+import { FormControlComponent } from '../_forms/form-control/form-control.component';
 
 @NgModule({
-  declarations: [HomePageComponent, RegisterFormComponent],
+  declarations: [
+    HomePageComponent,
+    RegisterFormComponent,
+    FormControlComponent,
+  ],
   imports: [
     RouterModule.forChild([{ path: '', component: HomePageComponent }]),
     CommonModule,

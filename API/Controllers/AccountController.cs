@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDTO registerDTO)
+        public async Task<ActionResult<LoginResponseDTO>> Register(RegisterDTO registerDTO)
         {
 
             if(await UserExists(registerDTO.Username))
@@ -30,9 +30,11 @@ namespace API.Controllers
                 return BadRequest("Username is taken");
             }
 
+            if(registerDTO is null) return BadRequest("Invalid register info");
+            if(registerDTO.Username is null) return BadRequest("Invalid username");
 
-            var user = new AppUser();
-            user.UserName = registerDTO.Username?.ToLower();
+
+            var user = registerDTO.ToAppUser();
 
             using var hmac = new HMACSHA512();
 
@@ -42,7 +44,12 @@ namespace API.Controllers
             _context.Users?.Add(user);
             await _context.SaveChangesAsync();
 
-            return user;
+            return new LoginResponseDTO
+            {
+                Username = user.UserName,
+                Token = _tokenGenerator.GenerateToken(user),
+                KnownAs = user.KnownAs
+            };
         } 
 
         [HttpPost("login")]
@@ -65,7 +72,8 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Token = _tokenGenerator.GenerateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url
+                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url,
+                KnownAs = user.KnownAs
             };
         }
 

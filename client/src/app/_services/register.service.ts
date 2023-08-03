@@ -4,11 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../_models/registerModel.model';
 import { map } from 'rxjs';
 import { LoginModel } from '../_models/login.model';
+import { AppUser } from '../_models/appUser.model';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegisterService {
+  url = environment.apiUrl;
   constructor(
     private accountService: AccountService,
     private httpClient: HttpClient
@@ -16,7 +19,7 @@ export class RegisterService {
 
   register(registerModel: RegisterModel) {
     return this.httpClient
-      .post('https://localhost:5001/api/account/register', {
+      .post(`${this.url}/account/register`, {
         username: registerModel.username,
         password: registerModel.password,
       })
@@ -37,6 +40,6 @@ export class RegisterService {
   }
 
   getUsers() {
-    return this.httpClient.get<any>('https://localhost:5001/api/users');
+    return this.httpClient.get<AppUser[]>('https://localhost:5001/api/users');
   }
 }

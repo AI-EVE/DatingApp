@@ -8,7 +8,7 @@ public class AppUser
     public string? UserName { get; set; }
     public byte[]? PasswordHash { get; set; }
     public byte[]? PasswordSalt { get; set; }
-    public DateOnly DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public string? KnownAs { get; set; }
     public DateTime Created { get; set; } = DateTime.UtcNow;
     public DateTime LastActive { get; set; } = DateTime.UtcNow;
@@ -31,11 +31,13 @@ public class AppUser
 
 public static class AppUserExtensions
 {
-    public static int CalculateAge(this DateOnly dateOfBirth)
+    public static int CalculateAge(this DateOnly? dateOfBirth)
     {
+        if (!dateOfBirth.HasValue) return 0;
+
         var today = DateOnly.FromDateTime(DateTime.Today);
-        var age = today.Year - dateOfBirth.Year;
-        if (dateOfBirth.AddYears(age) > today) age--;
+        var age = today.Year - dateOfBirth.Value.Year;
+        if (dateOfBirth.Value.AddYears(age) > today) age--;
 
         return age;
     }
@@ -56,7 +58,7 @@ public static class AppUserExtensions
             Country = appUser.Country,
             Photos = appUser.Photos.Select(photo => photo.ToPhotoDTO()).ToList(),
             Age = appUser.Age,
-            PhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain).Url        
+            PhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url        
         };
     }
 }
